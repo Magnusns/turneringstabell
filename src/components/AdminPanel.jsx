@@ -179,7 +179,6 @@ function AdminPanel({ setIsAdmin }) {
     <div className="admin-container">
       <div className="admin-panel">
         <div className="admin-header">
-          <h2>Tournament Admin</h2>
           <div className="admin-buttons">
             <button onClick={() => setIsAdmin(false)}>Back to Main Page</button>
             <button onClick={handleLogout}>Logout</button>

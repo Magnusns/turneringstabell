@@ -67,7 +67,7 @@ function App() {
   return (
     <div className="app-container">
       <header>
-        <h1>Turnering Scoreboard</h1>
+        <h1>Houdini Scoreboard</h1>
         <button onClick={toggleAdmin} className="admin-button">Admin</button>
       </header>
       
@@ -86,7 +86,7 @@ function App() {
         </div>
 
         <div className="schedule-section">
-          <h2>Matches ({matches.length})</h2>
+          <h2>Matches </h2>
           <div className="matches-list">
             {matches.map(match => (
               <div key={match.id} className="match-card">
@@ -94,9 +94,27 @@ function App() {
                 <div className="match-teams">
                   <span className="team-name">{match.team1}</span>
                   <div className="match-score">
-                    <span>{match.score1}</span>
-                    <span className="score-separator">-</span>
-                    <span>{match.score2}</span>
+                    {(match.score1 > 0 || match.score2 > 0) ? (
+                      <>
+                        <span style={{ 
+                          color: Number(match.score1) === Number(match.score2) ? '#ff69b4' : 
+                                Number(match.score1) > Number(match.score2) ? '#ff4444' : '#4CAF50',
+                          fontWeight: Number(match.score1) >= Number(match.score2) ? '600' : '500'
+                        }}>
+                          {match.score1}
+                        </span>
+                        <span className="score-separator" style={{ color: '#888888' }}>-</span>
+                        <span style={{ 
+                          color: Number(match.score1) === Number(match.score2) ? '#ff69b4' : 
+                                Number(match.score2) > Number(match.score1) ? '#ff4444' : '#4CAF50',
+                          fontWeight: Number(match.score2) >= Number(match.score1) ? '600' : '500'
+                        }}>
+                          {match.score2}
+                        </span>
+                      </>
+                    ) : (
+                      <span style={{ color: '#888888', fontSize: '0.9em' }}>vs</span>
+                    )}
                   </div>
                   <span className="team-name">{match.team2}</span>
                 </div>
