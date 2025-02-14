@@ -80,7 +80,7 @@ function App() {
   }
 
   if (isAdmin) {
-    return <AdminPanel />
+    return <AdminPanel setIsAdmin={setIsAdmin} />
   }
 
   return (

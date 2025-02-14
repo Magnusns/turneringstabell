@@ -4,7 +4,7 @@ import { collection, doc, updateDoc, query, orderBy, onSnapshot } from 'firebase
 import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import './AdminPanel.css';
 
-function AdminPanel() {
+function AdminPanel({ setIsAdmin }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -134,6 +134,7 @@ function AdminPanel() {
             </div>
             <button type="submit">Login</button>
           </form>
+          <button className="back-button" onClick={() => setIsAdmin(false)}>Back to Main Page</button>
         </div>
       </div>
     );
@@ -144,7 +145,10 @@ function AdminPanel() {
       <div className="admin-panel">
         <div className="admin-header">
           <h2>Tournament Admin</h2>
-          <button onClick={handleLogout}>Logout</button>
+          <div className="admin-buttons">
+            <button onClick={() => setIsAdmin(false)}>Back to Main Page</button>
+            <button onClick={handleLogout}>Logout</button>
+          </div>
         </div>
         {error && <div className="error">{error}</div>}
         <div className="matches-admin-list">
