@@ -250,6 +250,78 @@
   background: rgba(76, 175, 80, 0.15);
 }
 
+.admin-sections {
+  display: grid;
+  gap: 40px;
+  margin-top: 40px;
+}
+
+.points-section, .matches-section {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.points-section h3, .matches-section h3 {
+  color: #fff;
+  font-size: 1.5em;
+  margin: 0 0 24px 0;
+  font-weight: 500;
+}
+
+.teams-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.team-points-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.team-points-row:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.team-points-row .team-name {
+  color: #fff;
+  font-size: 1.1em;
+  font-weight: 500;
+}
+
+.points-input {
+  width: 80px;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: #4CAF50;
+  font-size: 1.2em;
+  font-weight: 600;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.points-input:focus {
+  outline: none;
+  border-color: #4CAF50;
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+}
+
+.points-input::-webkit-inner-spin-button,
+.points-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
 @media (max-width: 768px) {
   .admin-container {
     padding: 20px;
@@ -299,5 +371,22 @@
   
   .admin-buttons button {
     width: 100%;
+  }
+
+  .admin-sections {
+    gap: 24px;
+    margin-top: 24px;
+  }
+
+  .points-section, .matches-section {
+    padding: 16px;
+  }
+
+  .team-points-row {
+    padding: 8px;
+  }
+
+  .points-input {
+    width: 60px;
   }
 }

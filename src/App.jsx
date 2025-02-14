@@ -5,73 +5,54 @@ import AdminPanel from './components/AdminPanel'
 import './App.css'
 
 function App() {
-  const [teams, setTeams] = useState([
-    { id: 1, name: 'Lag 1', points: 0 },
-    { id: 2, name: 'Lag 2', points: 0 },
-    { id: 3, name: 'Lag 3', points: 0 },
-    { id: 4, name: 'Lag 4', points: 0 },
-    { id: 5, name: 'Lag 5', points: 0 },
-    { id: 6, name: 'Lag 6', points: 0 },
-  ])
-
+  const [teams, setTeams] = useState([])
   const [matches, setMatches] = useState([])
   const [isAdmin, setIsAdmin] = useState(false)
 
   useEffect(() => {
-    // Create a query that sorts by time
-    const matchesRef = collection(db, 'matches')
-    const q = query(matchesRef, orderBy('time'))
-
-    console.log('Setting up Firebase listener for matches...')
+    // Create a query that sorts by points in descending order
+    const teamsRef = collection(db, 'teams');
+    const teamsQuery = query(teamsRef, orderBy('points', 'desc'));
     
-    // Subscribe to matches collection with error handling
-    const unsubscribe = onSnapshot(q, 
-      (snapshot) => {
-        try {
-          const matchList = snapshot.docs.map(doc => {
-            const data = doc.data()
-            
-            // Get the actual team names from the data
-            const teams = Object.entries(data)
-              .filter(([key, value]) => key.startsWith('team') && value)
-              .sort(([a], [b]) => a.localeCompare(b))
-            
-            const [team1 = '', team2 = ''] = teams.map(([_, value]) => value)
-            
-            // Log match data in a clean format
-            const matchInfo = {
-              score: `${data.score1}-${data.score2}`,
-              status: data.isComplete ? 'Completed' : 'Not played'
-            }
-            console.log(`Match ${doc.id}: ${team1} vs ${team2} at ${data.time}`, matchInfo)
+    const unsubscribeTeams = onSnapshot(teamsQuery, (snapshot) => {
+      const teamsList = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setTeams(teamsList);
+    });
 
-            return {
-              id: doc.id,
-              time: data.time || '',
-              team1,
-              team2,
-              score1: data.score1 || 0,
-              score2: data.score2 || 0,
-              isComplete: data.isComplete || false
-            }
-          })
-          console.log('----------------------------------------')
-          console.log(`Total matches loaded: ${matchList.length}`)
-          console.log('----------------------------------------')
-          setMatches(matchList)
-        } catch (error) {
-          console.error('Error processing matches:', error)
+    // Create a query that sorts matches by time
+    const matchesRef = collection(db, 'matches')
+    const matchesQuery = query(matchesRef, orderBy('time'))
+    
+    const unsubscribeMatches = onSnapshot(matchesQuery, (snapshot) => {
+      const matchesList = snapshot.docs.map(doc => {
+        const data = doc.data()
+        
+        // Get the actual team names from the data
+        const teams = Object.entries(data)
+          .filter(([key, value]) => key.startsWith('team') && value)
+          .sort(([a], [b]) => a.localeCompare(b))
+        
+        const [team1 = '', team2 = ''] = teams.map(([_, value]) => value)
+
+        return {
+          id: doc.id,
+          time: data.time || '',
+          team1,
+          team2,
+          score1: data.score1 || 0,
+          score2: data.score2 || 0,
+          isComplete: data.isComplete || false
         }
-      },
-      (error) => {
-        console.error('Firebase subscription error:', error)
-      }
-    )
+      })
+      setMatches(matchesList)
+    })
 
-    // Cleanup subscription on unmount
     return () => {
-      console.log('Cleaning up Firebase listener...')
-      unsubscribe()
+      unsubscribeTeams()
+      unsubscribeMatches()
     }
   }, [])
 

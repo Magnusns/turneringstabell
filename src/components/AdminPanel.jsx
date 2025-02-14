@@ -9,6 +9,7 @@ function AdminPanel({ setIsAdmin }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [matches, setMatches] = useState([]);
+  const [teams, setTeams] = useState([]);
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -16,6 +17,7 @@ function AdminPanel({ setIsAdmin }) {
       setIsLoggedIn(!!user);
       if (user) {
         setupMatchesListener();
+        setupTeamsListener();
       }
     });
 
@@ -75,6 +77,26 @@ function AdminPanel({ setIsAdmin }) {
     }
   };
 
+  const setupTeamsListener = () => {
+    try {
+      const teamsRef = collection(db, 'teams');
+      const q = query(teamsRef, orderBy('name'));
+      
+      const unsubscribe = onSnapshot(q, (snapshot) => {
+        const teamsList = snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+        setTeams(teamsList);
+      });
+
+      return unsubscribe;
+    } catch (err) {
+      setError('Error setting up teams listener');
+      console.error('Error setting up teams listener:', err);
+    }
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
@@ -106,6 +128,19 @@ function AdminPanel({ setIsAdmin }) {
     } catch (err) {
       setError('Error updating score');
       console.error(err);
+    }
+  };
+
+  const updateTeamPoints = async (teamId, points) => {
+    try {
+      const teamRef = doc(db, 'teams', teamId);
+      await updateDoc(teamRef, {
+        points: parseInt(points) || 0
+      });
+      setError('');
+    } catch (err) {
+      setError('Error updating team points');
+      console.error('Error updating team points:', err);
     }
   };
 
@@ -151,31 +186,55 @@ function AdminPanel({ setIsAdmin }) {
           </div>
         </div>
         {error && <div className="error">{error}</div>}
-        <div className="matches-admin-list">
-          {matches.map(match => (
-            <div key={match.id} className="match-admin-card">
-              <div className="match-time">{match.time}</div>
-              <div className="match-teams">
-                <span className="team-name">{match.team1}</span>
-                <div className="score-inputs">
+        
+        <div className="admin-sections">
+          <div className="points-section">
+            <h3>Team Points</h3>
+            <div className="teams-grid">
+              {teams.map(team => (
+                <div key={team.id} className="team-points-row">
+                  <span className="team-name">{team.name}</span>
                   <input
                     type="number"
                     min="0"
-                    value={match.score1 || ''}
-                    onChange={(e) => updateScore(match.id, e.target.value, match.score2 || 0)}
-                  />
-                  <span className="score-separator">-</span>
-                  <input
-                    type="number"
-                    min="0"
-                    value={match.score2 || ''}
-                    onChange={(e) => updateScore(match.id, match.score1 || 0, e.target.value)}
+                    value={team.points || 0}
+                    onChange={(e) => updateTeamPoints(team.id, e.target.value)}
+                    className="points-input"
                   />
                 </div>
-                <span className="team-name">{match.team2}</span>
-              </div>
+              ))}
             </div>
-          ))}
+          </div>
+
+          <div className="matches-section">
+            <h3>Matches</h3>
+            <div className="matches-admin-list">
+              {matches.map(match => (
+                <div key={match.id} className="match-admin-card">
+                  <div className="match-time">{match.time}</div>
+                  <div className="match-teams">
+                    <span className="team-name">{match.team1}</span>
+                    <div className="score-inputs">
+                      <input
+                        type="number"
+                        min="0"
+                        value={match.score1 || ''}
+                        onChange={(e) => updateScore(match.id, e.target.value, match.score2 || 0)}
+                      />
+                      <span className="score-separator">-</span>
+                      <input
+                        type="number"
+                        min="0"
+                        value={match.score2 || ''}
+                        onChange={(e) => updateScore(match.id, match.score1 || 0, e.target.value)}
+                      />
+                    </div>
+                    <span className="team-name">{match.team2}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>
