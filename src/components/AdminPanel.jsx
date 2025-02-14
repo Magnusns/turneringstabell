@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { auth, db } from '../firebase';
-import { collection, doc, updateDoc, query, orderBy, onSnapshot } from 'firebase/firestore';
+import { collection, doc, updateDoc, query, orderBy, onSnapshot, setDoc } from 'firebase/firestore';
 import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import './AdminPanel.css';
 
@@ -11,6 +11,7 @@ function AdminPanel({ setIsAdmin }) {
   const [matches, setMatches] = useState([]);
   const [teams, setTeams] = useState([]);
   const [error, setError] = useState('');
+  const [longestDrive, setLongestDrive] = useState({ name: '', distance: 0 });
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -18,6 +19,7 @@ function AdminPanel({ setIsAdmin }) {
       if (user) {
         setupMatchesListener();
         setupTeamsListener();
+        setupLongestDriveListener();
       }
     });
 
@@ -97,6 +99,21 @@ function AdminPanel({ setIsAdmin }) {
     }
   };
 
+  const setupLongestDriveListener = () => {
+    try {
+      const longestDriveRef = doc(db, 'stats', 'longestDrive');
+      const unsubscribe = onSnapshot(longestDriveRef, (doc) => {
+        if (doc.exists()) {
+          setLongestDrive(doc.data());
+        }
+      });
+      return unsubscribe;
+    } catch (err) {
+      setError('Error setting up longest drive listener');
+      console.error('Error setting up longest drive listener:', err);
+    }
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
@@ -141,6 +158,20 @@ function AdminPanel({ setIsAdmin }) {
     } catch (err) {
       setError('Error updating team points');
       console.error('Error updating team points:', err);
+    }
+  };
+
+  const updateLongestDrive = async (name, distance) => {
+    try {
+      const longestDriveRef = doc(db, 'stats', 'longestDrive');
+      await setDoc(longestDriveRef, {
+        name,
+        distance: Number(distance)
+      });
+      setError('');
+    } catch (err) {
+      setError('Error updating longest drive');
+      console.error('Error updating longest drive:', err);
     }
   };
 
@@ -202,6 +233,38 @@ function AdminPanel({ setIsAdmin }) {
                   />
                 </div>
               ))}
+            </div>
+          </div>
+
+          <div className="longest-drive-section">
+            <h3>Longest Drive</h3>
+            <div className="longest-drive-form">
+              <div className="input-group">
+                <input
+                  type="text"
+                  placeholder="Player Name"
+                  value={longestDrive.name}
+                  onChange={(e) => setLongestDrive(prev => ({ ...prev, name: e.target.value }))}
+                  className="name-input"
+                />
+                <div className="distance-input-group">
+                  <input
+                    type="number"
+                    min="0"
+                    placeholder="Distance"
+                    value={longestDrive.distance || ''}
+                    onChange={(e) => setLongestDrive(prev => ({ ...prev, distance: e.target.value }))}
+                    className="distance-input"
+                  />
+                  <span className="distance-unit">m</span>
+                </div>
+                <button 
+                  onClick={() => updateLongestDrive(longestDrive.name, longestDrive.distance)}
+                  className="update-button"
+                >
+                  Update
+                </button>
+              </div>
             </div>
           </div>
 

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { db } from './firebase'
-import { collection, onSnapshot, query, orderBy } from 'firebase/firestore'
+import { collection, onSnapshot, query, orderBy, doc } from 'firebase/firestore'
 import AdminPanel from './components/AdminPanel'
 import './App.css'
 
@@ -8,6 +8,7 @@ function App() {
   const [teams, setTeams] = useState([])
   const [matches, setMatches] = useState([])
   const [isAdmin, setIsAdmin] = useState(false)
+  const [longestDrive, setLongestDrive] = useState({ name: '', distance: 0 })
 
   useEffect(() => {
     // Create a query that sorts by points in descending order
@@ -50,9 +51,18 @@ function App() {
       setMatches(matchesList)
     })
 
+    // Listen for longest drive updates
+    const longestDriveRef = doc(db, 'stats', 'longestDrive')
+    const unsubscribeLongestDrive = onSnapshot(longestDriveRef, (doc) => {
+      if (doc.exists()) {
+        setLongestDrive(doc.data())
+      }
+    })
+
     return () => {
       unsubscribeTeams()
       unsubscribeMatches()
+      unsubscribeLongestDrive()
     }
   }, [])
 
@@ -83,10 +93,19 @@ function App() {
               </div>
             ))}
           </div>
+          {longestDrive.name && (
+            <div className="longest-drive">
+              <h3>Longest Drive</h3>
+              <div className="longest-drive-info">
+                <span className="player-name">{longestDrive.name}</span>
+                <span className="drive-distance">{longestDrive.distance}m</span>
+              </div>
+            </div>
+          )}
         </div>
 
         <div className="schedule-section">
-          <h2>Matches </h2>
+          <h2>Matches</h2>
           <div className="matches-list">
             {matches.map(match => (
               <div key={match.id} className="match-card">

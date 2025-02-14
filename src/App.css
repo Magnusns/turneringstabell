@@ -193,6 +193,40 @@ header h1 {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+.longest-drive {
+  margin-top: 30px;
+  padding-top: 25px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.longest-drive h3 {
+  font-size: 1.2em;
+  color: #888;
+  margin: 0 0 15px 0;
+  font-weight: 400;
+}
+
+.longest-drive-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+}
+
+.longest-drive-info .player-name {
+  font-size: 1.2em;
+  color: #fff;
+  font-weight: 500;
+}
+
+.longest-drive-info .drive-distance {
+  font-size: 1.4em;
+  color: #4CAF50;
+  font-weight: 600;
+}
+
 @media (max-width: 1200px) {
   .main-content {
     grid-template-columns: 1fr;

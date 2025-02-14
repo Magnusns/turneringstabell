@@ -322,6 +322,73 @@
   margin: 0;
 }
 
+.longest-drive-section {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.longest-drive-section h3 {
+  color: #fff;
+  font-size: 1.5em;
+  margin: 0 0 24px 0;
+  font-weight: 500;
+}
+
+.longest-drive-form .input-group {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 16px;
+  align-items: center;
+}
+
+.name-input {
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: #fff;
+  font-size: 1.1em;
+}
+
+.distance-input-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.distance-input {
+  width: 80px;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: #4CAF50;
+  font-size: 1.1em;
+  text-align: right;
+}
+
+.distance-unit {
+  color: #888;
+  font-size: 1.1em;
+}
+
+.update-button {
+  padding: 12px 24px;
+  background: #4CAF50;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 1.1em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.update-button:hover {
+  background: #45a049;
+}
+
 @media (max-width: 768px) {
   .admin-container {
     padding: 20px;
@@ -388,5 +455,17 @@
 
   .points-input {
     width: 60px;
+  }
+
+  .longest-drive-form .input-group {
+    grid-template-columns: 1fr;
+  }
+
+  .distance-input-group {
+    justify-content: space-between;
+  }
+
+  .update-button {
+    width: 100%;
   }
 }
