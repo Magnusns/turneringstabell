@@ -239,7 +239,7 @@ function AdminPanel({ setIsAdmin }) {
           <div className="longest-drive-section">
             <h3>Longest Drive</h3>
             <div className="longest-drive-form">
-              <div className="input-group">
+              <div className="input-row">
                 <input
                   type="text"
                   placeholder="Player Name"
@@ -258,13 +258,13 @@ function AdminPanel({ setIsAdmin }) {
                   />
                   <span className="distance-unit">m</span>
                 </div>
-                <button 
-                  onClick={() => updateLongestDrive(longestDrive.name, longestDrive.distance)}
-                  className="update-button"
-                >
-                  Update
-                </button>
               </div>
+              <button 
+                onClick={() => updateLongestDrive(longestDrive.name, longestDrive.distance)}
+                className="update-button"
+              >
+                Update
+              </button>
             </div>
           </div>
 

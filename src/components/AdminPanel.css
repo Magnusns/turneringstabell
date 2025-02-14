@@ -5,6 +5,7 @@
   overflow-x: hidden;
   overscroll-behavior: none;
   box-sizing: border-box;
+  width: 100%;
 }
 
 .admin-login {
@@ -120,6 +121,7 @@
   display: flex;
   flex-direction: column;
   min-height: 100%;
+  box-sizing: border-box;
 }
 
 .admin-header {
@@ -259,9 +261,11 @@
 }
 
 .admin-sections {
-  display: grid;
-  gap: 40px;
-  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .points-section, .matches-section {
@@ -351,14 +355,20 @@
   font-weight: 500;
 }
 
-.longest-drive-form .input-group {
-  display: grid;
-  grid-template-columns: 1fr auto auto;
+.longest-drive-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.input-row {
+  display: flex;
   gap: 16px;
   align-items: center;
 }
 
 .name-input {
+  flex: 1;
   padding: 12px;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -374,7 +384,7 @@
 }
 
 .distance-input {
-  width: 80px;
+  width: 60px;
   padding: 12px;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -406,44 +416,52 @@
 
 @media (max-width: 768px) {
   .admin-container {
-    padding: 20px;
+    padding: 16px;
     min-height: 100%;
     overflow-x: hidden;
-  }
-
-  .admin-login {
-    margin: 20px auto;
-    padding: 20px;
+    width: 100%;
   }
 
   .admin-panel {
     padding: 0;
     min-height: 100%;
+    width: 100%;
   }
 
   .admin-sections {
     gap: 24px;
     margin-top: 24px;
+    width: 100%;
   }
 
-  .points-section, .matches-section, .longest-drive-section {
+  .points-section,
+  .matches-section,
+  .longest-drive-section {
     padding: 16px;
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
   }
 
   .team-points-row {
     padding: 8px;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .points-input {
     width: 60px;
   }
 
-  .longest-drive-form .input-group {
-    grid-template-columns: 1fr;
+  .input-row {
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
   }
 
+  .name-input,
   .distance-input-group {
-    justify-content: space-between;
+    width: 100%;
   }
 
   .update-button {
