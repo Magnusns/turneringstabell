@@ -2,6 +2,7 @@
   min-height: 100vh;
   background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
   padding: 40px;
+  overflow-x: hidden;
 }
 
 .admin-login {
@@ -111,8 +112,9 @@
 }
 
 .admin-panel {
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 0 auto;
+  width: 100%;
 }
 
 .admin-header {
@@ -400,52 +402,17 @@
 @media (max-width: 768px) {
   .admin-container {
     padding: 20px;
+    min-height: 100vh;
+    overflow-x: hidden;
   }
 
   .admin-login {
-    margin: 40px auto;
-    padding: 30px;
-  }
-
-  .match-admin-card {
+    margin: 20px auto;
     padding: 20px;
-    gap: 20px;
-    flex-direction: column;
-    align-items: stretch;
-    text-align: center;
   }
 
-  .match-time {
-    text-align: center;
-    min-width: auto;
-  }
-
-  .match-teams {
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  .team-name {
-    text-align: center;
-  }
-
-  .score-inputs {
-    justify-content: center;
-    padding: 12px;
-  }
-
-  .score-inputs input {
-    width: 70px;
-  }
-
-  .admin-buttons {
-    flex-direction: column;
-    gap: 12px;
-    width: 100%;
-  }
-  
-  .admin-buttons button {
-    width: 100%;
+  .admin-panel {
+    padding: 0;
   }
 
   .admin-sections {
@@ -453,7 +420,7 @@
     margin-top: 24px;
   }
 
-  .points-section, .matches-section {
+  .points-section, .matches-section, .longest-drive-section {
     padding: 16px;
   }
 

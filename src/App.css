@@ -3,6 +3,7 @@ body {
   padding: 0;
   background: #1a1a1a;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 #root {
@@ -16,6 +17,7 @@ body {
   display: flex;
   flex-direction: column;
   background: linear-gradient(to bottom, #1a1a1a, #222);
+  min-height: 100vh;
 }
 
 header {
@@ -227,11 +229,40 @@ header h1 {
   .main-content {
     grid-template-columns: 1fr;
     gap: 30px;
+    padding: 20px;
   }
 
   .scoreboard-section {
     position: relative;
     top: 0;
+  }
+
+  header {
+    padding: 15px 20px;
+  }
+
+  .match-card {
+    padding: 15px;
+    gap: 20px;
+    flex-direction: column;
+  }
+
+  .match-time {
+    font-size: 1.2em;
+    min-width: auto;
+  }
+
+  .match-teams {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .team-name {
+    font-size: 1.2em;
+  }
+
+  .match-score {
+    order: 2;
   }
 }
 
